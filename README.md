@@ -37,7 +37,7 @@ If you feel ready, start by incorporating React-Router, Redux and React-Redux (w
 - Campuses
   * have profile info including:
     * name - not empty or null
-    * imageUrl - defaul value
+    * imageUrl - default value
     * description - extremely large text
   * can have many students assigned (may have none)
 
