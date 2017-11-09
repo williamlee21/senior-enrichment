@@ -1,45 +1,40 @@
-'use strict'
+'use strict'; 
 
-const express = require('express')
-const bodyParser = require('body-parser')
-const {resolve} = require('path')
+const express = require('express');
+const path = require('path');
+const volleyball = require('volleyball');
+const bodyParser = require('body-parser');
+const db = require('../db')
 
-const app = express()
+const PORT = 1337;
+const app = express();
 
-if (process.env.NODE_ENV !== 'production') {
-  // Logging middleware (non-production only)
-  app.use(require('volleyball'))
-}  
+//logging middleware
+app.use(volleyball);
 
-//The code below works because `.use` returns `this` which is `app`. So what we want to return in the `module.exports` is `app`, and we can chain on that declaration because each method invokation returns `app` after mutating based on the middleware functions
-module.exports = app
-  .use(bodyParser.urlencoded({ extended: true }))
-  .use(bodyParser.json())
-  .use(express.static(resolve(__dirname, '..', 'public'))) // Serve static files from ../public
-  .use('/api', require('./api')) // Serve our api
-  .get('/*', (_, res) => res.sendFile(resolve(__dirname, '..', 'public', 'index.html'))) // Send index.html for any other requests.
+//body parsing middleware
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
-  // notice the use of `_` as the first parameter above. This is a pattern for parameters that must exist, but you don't use or reference (or need) in the function body that follows.
+//static middleware
+app.use(express.static(path.join(__dirname, '../public')));
 
-if (module === require.main) {
-  // Start listening only if we're the main module.
+app.use('/api', require('./api')); // include our routes!
 
-  /* 
-    https://nodejs.org/api/modules.html#modules_accessing_the_main_module
-      - This (module === require.main) will be true if run via node foo.js, but false if run by require('./foo')
-      - If you want to test this, log `require.main` and `module` in this file and also in `api.js`. 
-        * Note how `require.main` logs the same thing in both files, because it is always referencing the "main" import, where we starting running in Node 
-        * In 'start.js', note how `module` is the same as `require.main` because that is the file we start with in our 'package.json' -- `node server/start.js`
-        * In 'api.js', note how `module` (this specific file - i.e. module) is different from `require.main` because this is NOT the file we started in and `require.main` is the file we started in
-          ~ To help compare these objects, reference each of their `id` attributes
-  */
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../public/index.html'));
+}); // Send index.html for any other requests
 
-  const PORT = 1337
+//error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(err.status || 500).send(err.message || 'Internal server error');
+});
 
-  const db = require('../db')
-  db.sync()
-  .then(() => {
-    console.log('db synced')
-    app.listen(PORT, () => console.log(`server listening on port ${PORT}`))
-  });
-}
+db.sync() // if you update your db schemas, make sure you drop the tables first and then recreate them
+.then(() => {
+  console.log('db synced')
+  app.listen(PORT, () => console.log(`server flyin on port ${PORT}`))
+});
+
+module.exports = app;
