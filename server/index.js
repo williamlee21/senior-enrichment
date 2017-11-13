@@ -4,9 +4,7 @@ const express = require('express');
 const path = require('path');
 const volleyball = require('volleyball');
 const bodyParser = require('body-parser');
-const db = require('../db')
 
-const PORT = 1337;
 const app = express();
 
 //logging middleware
@@ -29,12 +27,6 @@ app.get('*', (req, res) => {
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(err.status || 500).send(err.message || 'Internal server error');
-});
-
-db.sync() // if you update your db schemas, make sure you drop the tables first and then recreate them
-.then(() => {
-  console.log('db synced')
-  app.listen(PORT, () => console.log(`server flyin on port ${PORT}`))
 });
 
 module.exports = app;

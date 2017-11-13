@@ -1,7 +1,7 @@
 'use strict'
 const chalk = require('chalk');
 const Sequelize = require('sequelize');
-const pkg = require('../package.json');
+const pkg = require('../../package.json');
 
 console.log(chalk.yellow("Opening database connection"));
 
