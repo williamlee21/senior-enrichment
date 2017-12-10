@@ -9,7 +9,6 @@ const Students = require('../db/models/students')
 	// Ideally you would have something to handle this, so if you have time try that out!
 apiRouter.get('/hello', (req, res) => res.send({hello: 'world'}))
 
-
 apiRouter.get('/campuses', (req, res, next) => {
   Campuses.findAll({
     include: {
@@ -21,14 +20,14 @@ apiRouter.get('/campuses', (req, res, next) => {
 })
 
 apiRouter.get('/campuses/:id', (req, res, next) => {
-  Campuses.findById(req.params.id)
-  .then(campus => res.json(campus))
+  Campuses.findById(req.params.id, {include:{all:true}})
+  .then(campus => res.send(campus))
   .catch(next)
 })
 
 apiRouter.post('/campuses/add', (req, res, next) => {
-  Campuses.create({name: req.body.name, description: req.body.description, students: req.body.students})
-  .then(createdCampus => res.send(createdCampus.name, ' is created.'))
+  Campuses.create({name: req.body.name , description: req.body.description})
+  .then(createdCampus => res.status(201).json(createdCampus))
   .catch(next)
 })
 
@@ -37,6 +36,19 @@ apiRouter.put('/campuses/:id', (req, res, next) => {
     where: {id: req.params.id}
   })
   .then(updateCampus => res.send(updateCampus.name, ' is updated'))
+  .catch(next)
+})
+
+apiRouter.delete('/campuses/:id', (req, res, next) => {
+  const campusId = req.params.id
+  Campuses.destroy({where: {id: campusId}})
+  .then(res.status(204).send())
+  .catch(next)
+})
+
+apiRouter.get('/students', (req, res, next) => {
+  Students.findAll()
+  .then(students => res.send(students))
   .catch(next)
 })
 
