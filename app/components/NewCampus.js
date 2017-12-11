@@ -47,13 +47,15 @@ export default class NewCampus extends Component{
                         <div className='alert'>{ warning }</div>
                     }
                     <span>Campus Name</span>
-                    <input 
-                        value={this.state.campusName} 
+                    <input
+                        value={this.state.campusName}
+                        placeholder='Enter campus name' 
                         onChange={this.handleCampusName} 
                     />
                     <span>Description</span>
                     <input 
                         value={this.state.campusDescription} 
+                        placeholder='Enter description'
                         onChange={this.handleCampusDescription} 
                     />
                     <button disabled={!this.state.campusName.length}>SUBMIT</button>

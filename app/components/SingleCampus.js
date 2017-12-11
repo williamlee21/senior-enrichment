@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import axios from 'axios'
 import {Link} from 'react-router-dom'
 
+//students will have a null campusId
 export default class SingleCampus extends Component{
 
   constructor(){
@@ -24,12 +25,12 @@ export default class SingleCampus extends Component{
     console.log(this.state.selectedCampus)
     const campusId = this.state.selectedCampus.id
     axios.delete(`/api/campuses/${campusId}`)
+    //axios.delete(`/api/students/campus/${campusId}`)
     .then(this.setState({ selectedCampus:{} }))
     
   }
   render(){
     const campus = this.state.selectedCampus
-    // console.log('props', this.props)
     console.log('state', this.state)
     return (
       <div>
@@ -57,5 +58,3 @@ export default class SingleCampus extends Component{
     )
   }
 }
-
-//shit is still there after deleting. what should be done? 
