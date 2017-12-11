@@ -9,6 +9,7 @@ import SingleCampus from './SingleCampus'
 import AllStudent from './AllStudents'
 import NewCampus from './NewCampus'
 import NewStudent from './NewStudent'
+import SingleStudent from './SingleStudent'
 
 
 export default class Main extends Component{
@@ -25,7 +26,8 @@ export default class Main extends Component{
               <Route exact path='/' component={AllCampuses} />
               <Route exact path='/campuses' component={AllCampuses} />
               <Route path='/campuses/:campusId' component={SingleCampus} />
-              <Route path='/students/' component={AllStudent} />
+              <Route exact path='/students/' component={AllStudent} />
+              <Route path='/students/:studentId' component={SingleStudent} />
               <Route path='/new-campus' component={NewCampus} />
               <Route path='/new-student' component={NewStudent} />
             </div>

@@ -44,7 +44,8 @@ export default class SingleCampus extends Component{
           campus.students && campus.students.map(student => {
             return (
               <div key={student.id}>
-                <h4>Name: {student.fullName}</h4>
+                <span>Name: </span>
+                <Link to={`/students/${student.id}`}>{student.fullName}</Link>
                 <h5>Email: {student.email}</h5>
                 <h5>GPA: {student.gpa}</h5>
               </div>

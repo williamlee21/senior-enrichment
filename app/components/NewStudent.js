@@ -10,7 +10,7 @@ export default class NewStudent extends Component{
             firstName: '',
             lastName: '',
             email: '',
-            gpa: 0.0,
+            gpa: null,
             campusId: 0
         }
         this.handleFirstName = this.handleFirstName.bind(this)
@@ -55,8 +55,9 @@ export default class NewStudent extends Component{
         //need to fix handlesubmit 
         axios.post('/api/students/add', { firstName, lastName, email, gpa, campusId })
             .then(res => res.data)
-            .then(student => console.log(student))  
-            //.then(this.setState({ firstName:'', lastName:'', email:'', gpa:0.0, campusId:0 }))
+            .then(student => console.log(student)) 
+            // .catch(err=>console.error(err))
+            .then(this.setState({ firstName:'', lastName:'', email:'', gpa:0.0, campusId:0 }))
     }
 
     render(){

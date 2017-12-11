@@ -49,8 +49,15 @@ apiRouter.delete('/campuses/:id', (req, res, next) => {
 
 //get students
 apiRouter.get('/students', (req, res, next) => {
-  Students.findAll()
+  Students.findAll({include:{all:true}})
   .then(students => res.json(students))
+  .catch(next)
+})
+
+//get a singel student
+apiRouter.get('/students/:id', (req, res, next) => {
+  Students.findById(req.params.id, {include:{all:true}})
+  .then(student => res.send(student))
   .catch(next)
 })
 
@@ -62,13 +69,14 @@ apiRouter.post('/students/add', (req, res, next) => {
 })
 
 //delete student
-apiRouter.delete('students/:id', (req, res, next) => {
+apiRouter.delete('/students/:id', (req, res, next) => {
   Students.destroy({ where: { id: req.params.id }})
-  .then(result => res.send({message: 'student destoryed'}))
+  .then(res.status(204).send())
+  .catch(next)
 })
 
 //delete student if campus is destroyed
-apiRouter.delete('students/campus/:campusId', (req, res, next) => {
+apiRouter.delete('/students/campus/:campusId', (req, res, next) => {
   Students.destroy({ where: { campusId: req.params.campusId}})
 })
 

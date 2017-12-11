@@ -11,7 +11,9 @@ export default class AllCampuses extends Component{
     this.state = {
       students: []
     }
+    this.handleDelete = this.handleDelete.bind(this)
   }
+
 
   componentDidMount(){
     axios.get('api/students')
@@ -19,6 +21,14 @@ export default class AllCampuses extends Component{
     .then(students => this.setState({students}))
   }
 
+  handleDelete(evt){
+    evt.preventDefault()
+    const studentId = (evt.target.value)
+    axios.delete(`api/students/${studentId}`)
+    axios.get('api/students')
+    .then(res => res.data)
+    .then(students => this.setState({students}))
+  }
   render(){
     const students = this.state.students
     
@@ -32,11 +42,11 @@ export default class AllCampuses extends Component{
           students.map(student => {
             return (
               <div key={student.id}>
-                <span>{student.fullName} </span>
+                <Link to={`/students/${student.id}`}>{student.fullName} </Link>
                 <span>{student.email}</span>
                 <span>{student.gpa}</span>
                 <span>{student.campusId}</span>
-                <button>Delete Student Info </button>
+                <button onClick={this.handleDelete} value={student.id}>Delete Student Info </button>
               </div>
             )
           })
