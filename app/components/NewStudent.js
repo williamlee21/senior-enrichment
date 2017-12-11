@@ -17,7 +17,7 @@ export default class NewStudent extends Component{
         this.handleLastName = this.handleLastName.bind(this)
         this.handleEmail = this.handleEmail.bind(this)
         this.handleGPA = this.handleGPA.bind(this)
-        this.handleCampusId = this.handleCampusId.bind(this)
+        //this.handleCampusId = this.handleCampusId.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
     }
 
@@ -39,11 +39,11 @@ export default class NewStudent extends Component{
     handleGPA(evt){
         this.setState({ gpa: evt.target.value })
     }
-    handleCampusId (evt){
-        console.log('evt ', evt.target)
-        this.setState({ campusId: evt})
-        console.log('state ', this.state.campusId)
-    }
+    // handleCampusId (evt){
+    //     console.log('evt ', evt.target)
+    //     this.setState({ campusId: evt})
+    //     console.log('state ', this.state.campusId)
+    // }
 
     handleSubmit (evt){
         evt.preventDefault()
@@ -51,12 +51,12 @@ export default class NewStudent extends Component{
         const lastName = this.state.lastName
         const email = this.state.email
         const gpa = this.state.gpa
-        const campusId = this.state.campusId
+        const campusId = evt.target.something.value
         //need to fix handlesubmit 
         axios.post('/api/students/add', { firstName, lastName, email, gpa, campusId })
             .then(res => res.data)
             .then(student => console.log(student))  
-        this.setState({ firstName:'', lastName:'', email:'', gpa:0.0, campusId:0 })
+            //.then(this.setState({ firstName:'', lastName:'', email:'', gpa:0.0, campusId:0 }))
     }
 
     render(){
@@ -89,11 +89,11 @@ export default class NewStudent extends Component{
                             onChange={this.handleGPA}
                         />
                     <span>CAMPUS</span>
-                        <select >
+                        <select name='something'>
                         {
                             this.state.campuses.map(campus => {
                                 return (
-                                    <option onChange={this.handleCampusId} key={campus.id} value={campus}>
+                                    <option  key={campus.id} value={campus.id}>
                                         {campus.name}
                                     </option>
                                 )
