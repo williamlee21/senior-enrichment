@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import axios from 'axios'
+import {Redirect} from 'react-router'
 
 export default class EditCampus extends Component{
 
@@ -8,18 +9,21 @@ export default class EditCampus extends Component{
         this.state = {
             campusName: '',
             campusDescription: '',
-            dirty: false
+            dirty: false,
+            redirectToPage: false
         }
         this.handleCampusName = this.handleCampusName.bind(this)
         this.handleCampusDescription = this.handleCampusDescription.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
     }
 
-    componentDidMount(){
-        const campuseId = this.props.match.params.campusId
+    ComponentDidMount(){
+        //console.log(this.props.match.params.campusId)
+        const campusId = this.props.match.params.campusId
         axios.get(`/campuses/${campusId}`)
         .then(res => res.data)
         .then((campus) => {
+            console.log(campus)
             this.setState({campusName: campus.name, 
                 campusDescription: campus.description
             })
@@ -37,16 +41,17 @@ export default class EditCampus extends Component{
 
     handleSubmit (evt){
         evt.preventDefault()
-        console.log(this.state)
+        console.log(this.props)
         const name = this.state.campusName
         const description = this.state.campusDescription
-        axios.post('/api/campuses/add', { name, description })
+        const campusId = this.props.match.params.campusId
+        axios.put(`/api/campuses/${campusId}`, { name, description })
             .then(res => res.data)
             .then(campus => console.log(campus))  
-        this.setState({ campusName: '', campusDescription: '', dirty: false })
+        this.setState({redirectToPage:true})
     }
     render(){
-        const nameLength = this.state.campusName.length
+        const nameLength = this.state.campusName.length 
         const tooShortAndDirty = this.state.dirty && nameLength < 1
         const warning = 'Campus Name is required'
 
@@ -56,6 +61,9 @@ export default class EditCampus extends Component{
                     {
                         tooShortAndDirty && 
                         <div className='alert'>{ warning }</div>
+                    }
+                    {
+                        this.state.redirectToPage && <Redirect to="/campuses/" />
                     }
                     <span>Campus Name</span>
                     <input
@@ -69,7 +77,7 @@ export default class EditCampus extends Component{
                         placeholder='Enter description'
                         onChange={this.handleCampusDescription} 
                     />
-                    <button disabled={!this.state.campusName.length}>SUBMIT</button>
+                    <button disabled={!this.state.campusName.length}>UPDATE</button>
                 </form>
             </div>
         )

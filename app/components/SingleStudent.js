@@ -21,14 +21,12 @@ export default class SingleStudent extends Component{
 
   handleDelete(evt){
     evt.preventDefault ()
-    console.log(this.state.selectedStudent)
     const studentId = this.state.selectedStudent.id
-    axios.delete(`/api/campuses/${studentId}`)
+    axios.delete(`/api/students/${studentId}`)
     .then(this.setState({ selectedStudent:{} }))
   }
   render(){
     const student = this.state.selectedStudent
-    console.log('state', this.state)
     return (
       <div>
         <div>
@@ -36,17 +34,22 @@ export default class SingleStudent extends Component{
           !this.state.selectedStudent.id &&
           <h1>STUDENT NOT FOUND</h1>
         }
-        <h2>{student.name}</h2>
+        {
+          this.state.selectedStudent.id &&
+          <div><h2>{student.name}</h2>
         
               <div key={student.id}>
                 <h4>Name: {student.fullName}</h4>
                 <h5>Email: {student.email}</h5>
                 <h5>GPA: {student.gpa}</h5>
-                <h5>Campus: {student.campusId}</h5>
+                <h5>Campus: {student.campus.name}</h5>
               </div>
-            
-        </div>
-        <button>EDIT</button>
+              </div>
+          }
+          </div>
+        <button>
+          <Link to={`/update-students/${student.id}`}>EDIT</Link>
+        </button>
         <button onClick={this.handleDelete} >DELETE</button>
       </div>
     )

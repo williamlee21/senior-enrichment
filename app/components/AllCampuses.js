@@ -24,7 +24,7 @@ export default class AllCampuses extends Component{
     
     return(
       <div>
-        <h3>CAMPUSES</h3>
+        <h3>LIST OF CAMPUSES</h3>
         <button>
           <Link to="/new-campus">Add Campus</Link>
         </button>
@@ -33,6 +33,7 @@ export default class AllCampuses extends Component{
             return (
               <div key={campus.id}>
                 <Link to={`/campuses/${campus.id}`} >{campus.name} </Link>
+                <img src={campus.img} />
                 <span>{campus.description}</span>
                 {
                   campus.students.map(student => {

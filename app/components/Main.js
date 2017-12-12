@@ -6,19 +6,19 @@ import {HashRouter as Router, Route} from 'react-router-dom'
 import Header from './Header'
 import AllCampuses from './AllCampuses'
 import SingleCampus from './SingleCampus'
-import AllStudent from './AllStudents'
+import AllStudents from './AllStudents'
 import NewCampus from './NewCampus'
 import NewStudent from './NewStudent'
 import SingleStudent from './SingleStudent'
-
+import EditCampus from './EditCampus';
+import EditStudent from './EditStudent'
 
 export default class Main extends Component{
  
   render(){
-    //console.log('campus ',  this.state.selectedCampus)
     return (
       <div>
-        <h1>hello</h1>
+        <h1>FULLSTACK</h1>
         <Router>
           <div>
             <Header deselectCampus={this.deselectCampus}/>
@@ -26,16 +26,15 @@ export default class Main extends Component{
               <Route exact path='/' component={AllCampuses} />
               <Route exact path='/campuses' component={AllCampuses} />
               <Route path='/campuses/:campusId' component={SingleCampus} />
-              <Route exact path='/students/' component={AllStudent} />
+              <Route exact path='/students/' component={AllStudents} />
               <Route path='/students/:studentId' component={SingleStudent} />
               <Route path='/new-campus' component={NewCampus} />
               <Route path='/new-student' component={NewStudent} />
+              <Route path='/update-campuses/:campusId' component={EditCampus} />
+              <Route path='/update-students/:studentId' component={EditStudent} />
             </div>
           </div>
         </Router>
-        {/* <AllCampuses selectCampus={this.selectCampus} {...this.state} />        
-        {this.state.selectedCampus.id && 
-        <SingleCampus campus={this.state.selectedCampus} />} */}
       </div>
     )
   }

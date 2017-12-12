@@ -23,6 +23,7 @@ export default class NewStudent extends Component{
     }
 
     componentDidMount(){
+        //console.log(this.props.match.params)
         axios.get('/api/campuses')
         .then(res => res.data)
         .then(campuses => this.setState({ campuses }))
@@ -48,19 +49,19 @@ export default class NewStudent extends Component{
         const email = this.state.email
         const gpa = this.state.gpa
         const campusId = evt.target.something.value
-        console.log(campusId)
-        axios.post('/api/students/add', { firstName, lastName, email, gpa, campusId })
+        const studentId = this.props.match.params.studentId
+        axios.put(`/api/students/${studentId}`, { firstName, lastName, email, gpa, campusId })
             .then(res => res.data)
             .then(student => console.log(student)) 
-            .then(this.setState({ redirectToPage: true}))
+            .then(this.setState({ redirectToPage:true }))
     }
 
     render(){
-        
+        const studentId = this.props.match.params.studentId
         return (
             <div>
                 {
-                    this.state.redirectToPage && <Redirect to={`/students/`}/>
+                    this.state.redirectToPage && <Redirect to={`/students/${studentId}`} />
                 }
                 <form onSubmit={this.handleSubmit}>
                     <span>First Name</span>

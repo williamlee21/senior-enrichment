@@ -31,10 +31,10 @@ export default class AllCampuses extends Component{
   }
   render(){
     const students = this.state.students
-    
+    console.log(students)
     return(
       <div>
-        <h3>STUDENTS</h3>
+        <h3>LIST OF STUDENTS</h3>
         <button>
             <Link to='/new-student'>Add Student</Link>
         </button>
@@ -44,8 +44,7 @@ export default class AllCampuses extends Component{
               <div key={student.id}>
                 <Link to={`/students/${student.id}`}>{student.fullName} </Link>
                 <span>{student.email}</span>
-                <span>{student.gpa}</span>
-                <span>{student.campusId}</span>
+                {student.campus && <span>{student.campus.name}</span>}
                 <button onClick={this.handleDelete} value={student.id}>Delete Student Info </button>
               </div>
             )

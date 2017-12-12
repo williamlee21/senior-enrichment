@@ -35,7 +35,7 @@ apiRouter.put('/campuses/:id/', (req, res, next) => {
   Campuses.update(req.body, {
     where: {id: req.params.id}
   })
-  .then(updateCampus => res.send(updateCampus.name, ' is updated'))
+  .then(updateCampus => res.status(201).send())
   .catch(next)
 })
 
@@ -77,15 +77,17 @@ apiRouter.delete('/students/:id', (req, res, next) => {
 
 //delete student if campus is destroyed
 apiRouter.delete('/students/campus/:campusId', (req, res, next) => {
-  Students.destroy({ where: { campusId: req.params.campusId}})
+  Students.destroy({ where: { campusId: Number(req.params.campusId)}})
+  .then(res.status(204).send())
+  .catch(next)
 })
 
 //update student
-apiRouter.put('/student/:id', (req, res, next) => {
+apiRouter.put('/students/:id', (req, res, next) => {
   Students.update(req.body, {
     where: {id: req.params.id}
   })
-  .then(updateStudent => res.send(updateStudent.fullName, ' is updated.'))
+  .then(res.status(201).send())
   .catch(next)
 })
 // You can put all routes in this file; HOWEVER, this file should almost be like a table of contents for the routers you create

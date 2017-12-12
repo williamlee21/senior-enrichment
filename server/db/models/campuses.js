@@ -9,6 +9,9 @@ const Campuses = db.define('campuses', {
   },
   description: {
     type: Sequelize.TEXT
+  },
+  imageURL: {
+    type: Sequelize.STRING
   }
 })
 
